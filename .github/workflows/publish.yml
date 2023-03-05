@@ -17,3 +17,4 @@ jobs:
           repository: ${GITHUB_REPOSITORY}
           tags: ${{ github.sha }}
           dockerfile: Dockerfile
+          
