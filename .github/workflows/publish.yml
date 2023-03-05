@@ -1,7 +1,8 @@
-name: publish docker image
+name: publish
 on:
   push:
-    branches: main
+    tags:
+      - 'v*'
       
 jobs:
   publish-docker-image:
@@ -16,7 +17,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build the Docker image
         run: |
-          tag=${github.sha}
+          tag=${GITHUB_REF#refs/tags/}
+          tag=${tag:1}
           image=ghcr.io/${GITHUB_REPOSITORY}
           docker build . -t ${image}:${tag} -t ${image}:latest
           docker push ${image} --all-tags
