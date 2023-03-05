@@ -1,0 +1,19 @@
+name: publish docker image
+on:
+  push:
+    branches: main
+jobs:
+  push_to_registry:
+    name: Publish Docker image to GitHub Container Registry
+    runs-on: ubuntu-latest
+    steps:
+        uses: actions/checkout@v3
+      - name: Build and Push
+        uses: docker/build-push-action@v4
+        with:
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITGUB_TOKEN }}
+          registry: ghcr.io
+          repository: ${GITHUB_REPOSITORY}
+          tags: ${{ github.sha }}
+          dockerfile: Dockerfile
