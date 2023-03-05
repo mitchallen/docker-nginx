@@ -16,8 +16,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build the Docker image
         run: |
-          tag=${GITHUB_REF#refs/tags/}
-          tag=${tag:1}
+          tag=${github.sha}
           image=ghcr.io/${GITHUB_REPOSITORY}
           docker build . -t ${image}:${tag} -t ${image}:latest
           docker push ${image} --all-tags
