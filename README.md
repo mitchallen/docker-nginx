@@ -1,15 +1,14 @@
-
 ## Usage
 
 ### Trigger a build
 
-Be sure to increment the tag each time.
+To trigger a build and publish a new Docker image, use:
 
 ```sh
-git checkout main
-git tag v1.0.0
-git push origin --tags
+make publish
 ```
+
+This will create a new version tag and trigger the GitHub Actions workflow to build and push the Docker image.
 
 ### Create and run container
 
