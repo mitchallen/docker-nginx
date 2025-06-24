@@ -31,9 +31,7 @@ rm:
 cleanup: stop rm
 
 publish:
-	@version=$$(date +%Y%m%d%H%M%S); \
-	git tag v$$version; \
-	git push origin v$$version
+	npx --yes github:mitchallen/npx-git-version patch
 
 help:
 	@echo "Usage: make <target>"
