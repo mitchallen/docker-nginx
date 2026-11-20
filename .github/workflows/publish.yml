@@ -7,6 +7,9 @@ on:
 jobs:
   publish-docker-image:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # create the GitHub Release
+      packages: write   # push to ghcr.io
     steps:
       - uses: actions/checkout@v7
       - name: Login to GitHub Container Registry
@@ -22,3 +25,11 @@ jobs:
           image=ghcr.io/${GITHUB_REPOSITORY}
           docker build . -t ${image}:${tag} -t ${image}:latest
           docker push ${image} --all-tags
+      # Without this, tags got images but no GitHub Release, and the repo's
+      # Releases widget stalled at v1.0.2 (2023) while packages reached v1.0.8.
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 \
+            || gh release create "$GITHUB_REF_NAME" --verify-tag --title "$GITHUB_REF_NAME" --generate-notes
